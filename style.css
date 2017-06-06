@@ -14,9 +14,32 @@ body {
 }
 
 #center-box {
-	width: 600px;
-	height: 600px;
-
-	background-color: rgb(50, 50, 50);
+	background-color: rgb(50, 40, 40);
 	border: 1px solid silver;
+	border-radius: 5px;
+
+	padding: 5px;
+}
+
+.row {
+	display: flex;
+}
+
+.box {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	width: 150px;
+	height: 150px;
+
+	margin: 5px;
+
+	background-color: rgb(125, 115, 115);
+	border: 1px solid silver;
+	border-radius: 5px;
+
+	color: rgb(80, 70, 60);
+	font-size: 5.5em;
+	font-family: arial;
 }
