@@ -12,7 +12,11 @@ function addTile(x, y, value) {
 	tile.y = y;
 	tile.style.left = `${8 + tile.x * 166}px`;
 	tile.style.top =  `${8 + tile.y * 166}px`;
-	tile.style.backgroundColor = `rgb(${100 - value * 4}, 75, ${255 - value * 16})`;
+	// tile.style.backgroundColor = `rgb(${100 - value * 4}, 75, ${255 - value * 16})`;
+	// Just copy maryn and do the grayscale cuz I honestly like how it looks
+	let color = 240 - Math.log2(value) * 26;
+	if (color > 150) tile.style.color = "rgb(40, 40, 40)";
+	tile.style.backgroundColor = `rgb(${color}, ${color}, ${color})`;
 	tile.innerHTML = value;
 	document.getElementById("tile-container").appendChild(tile);
 
@@ -28,12 +32,20 @@ function updateTile(x, y, newx, newy) {
 	tile.style.top = `${8 + tile.y * 166}px`;
 }
 
+// addTile(1, 0, value=2);
+// addTile(2, 0, value=4);
+// // addTile(3, 0, value=8);
+// addTile(3, 0, value=16);
+// addTile(0, 1, value=8);
+// addTile(1, 1, value=4);
+
 addTile(1, 0, value=2);
 addTile(2, 0, value=4);
 // addTile(3, 0, value=8);
 addTile(3, 0, value=16);
 addTile(0, 1, value=8);
-addTile(1, 1, value=4);
+addTile(1, 1, value=32);
+addTile(2, 2, value=64);
 
 
 // -- Movement functions --
