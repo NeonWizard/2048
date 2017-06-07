@@ -23,13 +23,27 @@ function addTile(x, y, value) {
 	return true;
 }
 
-function updateTile(x, y, newx, newy) {
+function moveTile(x, y, newx, newy) {
 	let tile = document.querySelector(`.row${y}.col${x}`);
 	tile.className = `row${newy} col${newx} tile`;
 	tile.x = newx;
 	tile.y = newy;
 	tile.style.left = `${8 + tile.x * 166}px`;
 	tile.style.top = `${8 + tile.y * 166}px`;
+}
+
+// (x2, y2) merges into (x1, y1) 
+function mergeTiles(x1, y1, x2, y2) {
+	grid[x1][y1] = grid[x1][y1] * 2;
+	grid[x2][y2] = undefined;
+
+	document.getElementById("tile-container").removeChild(document.querySelector(`.row${y2}.col${x2}`));
+
+	let mergedTile = document.querySelector(`.row${y1}.col${x1}`);
+	mergedTile.innerHTML = grid[x1][y1];
+	let color = 240 - Math.log2(mergedTile.innerHTML) * 26;
+	if (color > 150) mergedTile.style.color = "rgb(40, 40, 40)";
+	mergedTile.style.backgroundColor = `rgb(${color}, ${color}, ${color})`;
 }
 
 // addTile(1, 0, value=2);
@@ -39,10 +53,11 @@ function updateTile(x, y, newx, newy) {
 // addTile(0, 1, value=8);
 // addTile(1, 1, value=4);
 
+addTile(0, 0, value=2);
 addTile(1, 0, value=2);
 addTile(2, 0, value=4);
 // addTile(3, 0, value=8);
-addTile(3, 0, value=16);
+// addTile(3, 0, value=16);
 addTile(0, 1, value=8);
 addTile(1, 1, value=32);
 addTile(2, 2, value=64);
@@ -56,8 +71,13 @@ function moveLeft() {
 				grid[x-1][y] = grid[x][y];
 				grid[x][y] = undefined;
 
-				updateTile(x, y, x-1, y);
-			}
+				moveTile(x, y, x-1, y);
+			// you're actually supposed to merge even if there isn't a collision
+			// } else if (grid[x][y] && grid[x-1][y]) {	// if there would be a collision, then merge
+				// if (grid[x][y] == grid[x-1][y]) {
+					// mergeTiles(x-1, y, x, y);
+				// }
+			// }
 		}
 	}
 }
@@ -68,7 +88,7 @@ function moveRight() {
 				grid[x+1][y] = grid[x][y];
 				grid[x][y] = undefined;
 
-				updateTile(x, y, x+1, y);
+				moveTile(x, y, x+1, y);
 			}
 		}
 	}
@@ -80,7 +100,7 @@ function moveUp() {
 				grid[x][y-1] = grid[x][y];
 				grid[x][y] = undefined;
 
-				updateTile(x, y, x, y-1);
+				moveTile(x, y, x, y-1);
 			}
 		}
 	}
@@ -92,7 +112,7 @@ function moveDown() {
 				grid[x][y+1] = grid[x][y];
 				grid[x][y] = undefined;
 
-				updateTile(x, y, x, y+1);
+				moveTile(x, y, x, y+1);
 			}
 		}
 	}
