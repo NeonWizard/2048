@@ -14,18 +14,29 @@ body {
 }
 
 #center-box {
+	position: relative;
+
 	background-color: rgb(50, 40, 40);
 	border: 1px solid silver;
 	border-radius: 5px;
 
 	padding: 5px;
+
+	width: 672px;
+	height: 672px;
+}
+
+/* -- Box grid stuff (background) -- */
+#grid-container {
+	position: absolute;
+	z-index: 1;
 }
 
 .row {
 	display: flex;
 }
 
-.box {
+.cell {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -33,13 +44,35 @@ body {
 	width: 150px;
 	height: 150px;
 
-	margin: 5px;
+	margin: 8px;
 
 	background-color: rgb(125, 115, 115);
 	border: 1px solid silver;
 	border-radius: 5px;
+}
+
+/* -- Tile grid stuff -- */
+#tile-container {
+	position: absolute;
+	z-index: 2;
+}
+
+.tile {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	position: absolute;
+
+	width: 150px;
+	height: 150px;
+	background-color: white;
 
 	color: rgb(80, 70, 60);
 	font-size: 5.5em;
 	font-family: arial;
+
+	border-radius: 5px;
+
+	transition: .1s;
 }
