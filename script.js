@@ -24,6 +24,9 @@ function addTile(x, y, value) {
 }
 
 function moveTile(x, y, newx, newy) {
+	grid[newx][newy] = grid[x][y];
+	grid[x][y] = undefined; 
+
 	let tile = document.querySelector(`.row${y}.col${x}`);
 	tile.className = `row${newy} col${newx} tile`;
 	tile.x = newx;
@@ -67,28 +70,25 @@ addTile(2, 2, value=64);
 function moveLeft() {
 	for (let y = 0; y < 4; y++) {
 		for (let x = 1; x < 4; x++) {
-			if (grid[x][y] && !grid[x-1][y]) {
-				grid[x-1][y] = grid[x][y];
-				grid[x][y] = undefined;
+			if (!grid[x][y]) continue;
 
-				moveTile(x, y, x-1, y);
-			// you're actually supposed to merge even if there isn't a collision
-			// } else if (grid[x][y] && grid[x-1][y]) {	// if there would be a collision, then merge
-				// if (grid[x][y] == grid[x-1][y]) {
-					// mergeTiles(x-1, y, x, y);
-				// }
-			// }
+			let newPos = x-1;
+			while (newPos >= 0 && !grid[newPos][y]) {
+				moveTile(newPos+1, y, newPos, y);
+				newPos -= 1;
+			}
 		}
 	}
 }
 function moveRight() {
 	for (let y = 0; y < 4; y++) {
 		for (let x = 2; x >= 0; x--) {
-			if (grid[x][y] && !grid[x+1][y]) {
-				grid[x+1][y] = grid[x][y];
-				grid[x][y] = undefined;
+			if (!grid[x][y]) continue;
 
-				moveTile(x, y, x+1, y);
+			let newPos = x+1;
+			while (newPos < 4 && !grid[newPos][y]) {
+				moveTile(newPos-1, y, newPos, y);
+				newPos += 1;
 			}
 		}
 	}
@@ -96,11 +96,12 @@ function moveRight() {
 function moveUp() {
 	for (let x = 0; x < 4; x++) {
 		for (let y = 1; y < 4; y++) {
-			if (grid[x][y] && !grid[x][y-1]) {
-				grid[x][y-1] = grid[x][y];
-				grid[x][y] = undefined;
+			if (!grid[x][y]) continue;
 
-				moveTile(x, y, x, y-1);
+			let newPos = y-1;
+			while (newPos >= 0 && !grid[x][newPos]) {
+				moveTile(x, newPos+1, x, newPos);
+				newPos -= 1;
 			}
 		}
 	}
@@ -108,11 +109,12 @@ function moveUp() {
 function moveDown() {
 	for (let x = 0; x < 4; x++) {
 		for (let y = 2; y >= 0; y--) {
-			if (grid[x][y] && !grid[x][y+1]) {
-				grid[x][y+1] = grid[x][y];
-				grid[x][y] = undefined;
+			if (!grid[x][y]) continue;
 
-				moveTile(x, y, x, y+1);
+			let newPos = y+1;
+			while (newPos < 4 && !grid[x][newPos]) {
+				moveTile(x, newPos-1, x, newPos);
+				newPos += 1;
 			}
 		}
 	}
@@ -121,6 +123,8 @@ function moveDown() {
 // Bind keys
 document.addEventListener("keydown", function(e) {
 	let keynum = e.keyCode;
+
+	// before actually moving tiles, merge everything on the movement axis
 
 	if (keynum === 39 || keynum === 68) {
 		moveRight();
