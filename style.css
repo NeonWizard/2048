@@ -16,14 +16,14 @@ body {
 #center-box {
 	position: relative;
 
-	background-color: rgb(50, 40, 40);
-	border: 1px solid silver;
+	background-color: rgb(40, 30, 30);
+	border: 1px solid rgb(100, 100, 100);
 	border-radius: 5px;
 
 	padding: 5px;
 
-	width: 672px;
-	height: 672px;
+	width: 664px;
+	height: 664px;
 }
 
 /* -- Box grid stuff (background) -- */
@@ -47,7 +47,7 @@ body {
 	margin: 8px;
 
 	background-color: rgb(125, 115, 115);
-	border: 1px solid silver;
+	/*border: 1px solid silver;*/
 	border-radius: 5px;
 }
 
@@ -68,8 +68,9 @@ body {
 	height: 150px;
 	background-color: white;
 
-	color: rgb(80, 70, 60);
-	font-size: 5.5em;
+	/*color: rgb(80, 70, 60);*/
+	color: white;
+	font-size: 5.2em;
 	font-family: arial;
 
 	border-radius: 5px;

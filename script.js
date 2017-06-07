@@ -10,8 +10,9 @@ function addTile(x, y, value) {
 	tile.className = `row${y} col${x} tile`;
 	tile.x = x;
 	tile.y = y;
-	tile.style.left = `${9 + tile.x * 168}px`;
-	tile.style.top =  `${9 + tile.y * 168}px`;
+	tile.style.left = `${8 + tile.x * 166}px`;
+	tile.style.top =  `${8 + tile.y * 166}px`;
+	tile.style.backgroundColor = `rgb(${100 - value * 4}, 75, ${255 - value * 16})`;
 	tile.innerHTML = value;
 	document.getElementById("tile-container").appendChild(tile);
 
@@ -23,14 +24,14 @@ function updateTile(x, y, newx, newy) {
 	tile.className = `row${newy} col${newx} tile`;
 	tile.x = newx;
 	tile.y = newy;
-	tile.style.left = `${9 + tile.x * 168}px`;
-	tile.style.top = `${9 + tile.y * 168}px`;
+	tile.style.left = `${8 + tile.x * 166}px`;
+	tile.style.top = `${8 + tile.y * 166}px`;
 }
 
 addTile(1, 0, value=2);
 addTile(2, 0, value=4);
-addTile(3, 0, value=8);
-// addTile(3, 0, value=16);
+// addTile(3, 0, value=8);
+addTile(3, 0, value=16);
 addTile(0, 1, value=8);
 addTile(1, 1, value=4);
 
@@ -99,5 +100,3 @@ document.addEventListener("keydown", function(e) {
 		moveDown();
 	}
 });
-
-// drawGrid();
