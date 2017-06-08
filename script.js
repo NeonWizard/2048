@@ -5,7 +5,7 @@ function updateTile(x, y) {
 	let tile = document.querySelector(`.row${y}.col${x}`);
 	// tile.style.backgroundColor = `rgb(${100 - value * 4}, 75, ${255 - value * 16})`;
 	// Just copy maryn and do the grayscale cuz I honestly like how it looks
-	let color = 240 - Math.log2(grid[x][y]) * 26;
+	let color = 240 - Math.log2(grid[x][y]) * 30;
 	tile.style.color = "white";
 	if (color > 180) tile.style.color = "rgb(40, 40, 40)";
 	tile.style.backgroundColor = `rgb(${color}, ${color}, ${color})`;
