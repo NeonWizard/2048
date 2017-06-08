@@ -153,16 +153,33 @@ document.addEventListener("keydown", function(e) {
 	let keynum = e.keyCode;
 
 	if (keynum === 39 || keynum === 68) {
-		mergeTiles(false);
 		moveRight();
+		window.setTimeout(function() {
+			mergeTiles(false);
+			moveRight();
+		}, 50);
 	} else if (keynum === 37 || keynum == 65) {
-		mergeTiles(false);
 		moveLeft();
+		window.setTimeout(function() {
+			mergeTiles(false);
+			moveLeft();
+		}, 50);
 	} else if (keynum === 87 || keynum == 38) {
-		mergeTiles(true);
 		moveUp();
+		window.setTimeout(function() {
+			mergeTiles(true);
+			moveUp();
+		}, 50);
 	} else if (keynum === 83 || keynum == 40) {
-		mergeTiles(true);
 		moveDown();
+		window.setTimeout(function() {
+			mergeTiles(true);
+			moveDown();
+		}, 50);
 	}
+	window.setTimeout(function() {
+		while (!addTile(Math.floor(Math.random() * 4), Math.floor(Math.random() * 4), 2)) {
+			continue;
+		}
+	}, 60);
 });
