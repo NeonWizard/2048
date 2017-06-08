@@ -49,14 +49,18 @@ function moveTile(x, y, newx, newy) {
 // addTile(0, 1, value=8);
 // addTile(1, 1, value=4);
 
-addTile(0, 0, value=2);
-addTile(1, 0, value=2);
-addTile(2, 0, value=4);
-// addTile(3, 0, value=8);
-// addTile(3, 0, value=16);
-addTile(0, 1, value=8);
-addTile(1, 1, value=32);
-addTile(2, 2, value=64);
+// addTile(0, 0, value=2);
+// addTile(1, 0, value=2);
+// addTile(2, 0, value=4);
+// // addTile(3, 0, value=8);
+// // addTile(3, 0, value=16);
+// addTile(0, 1, value=8);
+// addTile(1, 1, value=32);
+// addTile(2, 2, value=64);
+
+addTile(0, 0, 2);
+addTile(0, 1, 2);
+addTile(0, 2, 2);
 
 function mergeTiles(vert) {
 	if (!vert) {
@@ -177,9 +181,11 @@ document.addEventListener("keydown", function(e) {
 			moveDown();
 		}, 50);
 	}
-	window.setTimeout(function() {
-		while (!addTile(Math.floor(Math.random() * 4), Math.floor(Math.random() * 4), 2)) {
-			continue;
-		}
-	}, 60);
+	if (keynum == 39 || keynum == 68 || keynum == 37 || keynum == 65 || keynum == 87 || keynum == 38 || keynum == 83 || keynum == 40) {
+		window.setTimeout(function() {
+			while (!addTile(Math.floor(Math.random() * 4), Math.floor(Math.random() * 4), 2)) {
+				continue;
+			}
+		}, 60);
+	}
 });
