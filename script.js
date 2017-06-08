@@ -1,6 +1,17 @@
 let grid = [];
 for (let i = 0; i < 4; i++) { grid.push([]); }
 
+function updateTile(x, y) {
+	let tile = document.querySelector(`.row${y}.col${x}`);
+	// tile.style.backgroundColor = `rgb(${100 - value * 4}, 75, ${255 - value * 16})`;
+	// Just copy maryn and do the grayscale cuz I honestly like how it looks
+	let color = 240 - Math.log2(grid[x][y]) * 26;
+	tile.style.color = "white";
+	if (color > 180) tile.style.color = "rgb(40, 40, 40)";
+	tile.style.backgroundColor = `rgb(${color}, ${color}, ${color})`;
+	tile.innerHTML = grid[x][y];
+}
+
 function addTile(x, y, value) {
 	if (grid[x][y]) return false;
 
@@ -12,13 +23,9 @@ function addTile(x, y, value) {
 	tile.y = y;
 	tile.style.left = `${8 + tile.x * 166}px`;
 	tile.style.top =  `${8 + tile.y * 166}px`;
-	// tile.style.backgroundColor = `rgb(${100 - value * 4}, 75, ${255 - value * 16})`;
-	// Just copy maryn and do the grayscale cuz I honestly like how it looks
-	let color = 240 - Math.log2(value) * 26;
-	if (color > 150) tile.style.color = "rgb(40, 40, 40)";
-	tile.style.backgroundColor = `rgb(${color}, ${color}, ${color})`;
-	tile.innerHTML = value;
 	document.getElementById("tile-container").appendChild(tile);
+
+	updateTile(x, y);
 
 	return true;
 }
@@ -33,20 +40,6 @@ function moveTile(x, y, newx, newy) {
 	tile.y = newy;
 	tile.style.left = `${8 + tile.x * 166}px`;
 	tile.style.top = `${8 + tile.y * 166}px`;
-}
-
-// (x2, y2) merges into (x1, y1) 
-function mergeTiles(x1, y1, x2, y2) {
-	grid[x1][y1] = grid[x1][y1] * 2;
-	grid[x2][y2] = undefined;
-
-	document.getElementById("tile-container").removeChild(document.querySelector(`.row${y2}.col${x2}`));
-
-	let mergedTile = document.querySelector(`.row${y1}.col${x1}`);
-	mergedTile.innerHTML = grid[x1][y1];
-	let color = 240 - Math.log2(mergedTile.innerHTML) * 26;
-	if (color > 150) mergedTile.style.color = "rgb(40, 40, 40)";
-	mergedTile.style.backgroundColor = `rgb(${color}, ${color}, ${color})`;
 }
 
 // addTile(1, 0, value=2);
@@ -65,6 +58,41 @@ addTile(0, 1, value=8);
 addTile(1, 1, value=32);
 addTile(2, 2, value=64);
 
+function mergeTiles(vert) {
+	if (!vert) {
+		for (let y = 0; y < 4; y++) {
+			for (let x = 0; x < 3; x++) {
+				if (!grid[x][y] || !grid[x+1][y]) continue;
+
+				if (grid[x][y] == grid[x+1][y]) {
+					// merge to the left
+					grid[x][y] = grid[x][y] * 2;
+					grid[x+1][y] = undefined;
+
+					document.getElementById("tile-container").removeChild(document.querySelector(`.row${y}.col${x+1}`));
+
+					updateTile(x, y);
+				}
+			}
+		}
+	} else {
+		for (let x = 0; x < 4; x++) {
+			for (let y = 0; y < 3; y++) {
+				if (!grid[x][y] || !grid[x][y+1]) continue;
+
+				if (grid[x][y] == grid[x][y+1]) {
+					// merge up
+					grid[x][y] = grid[x][y] * 2;
+					grid[x][y+1] = undefined;
+
+					document.getElementById("tile-container").removeChild(document.querySelector(`.row${y+1}.col${x}`));
+
+					updateTile(x, y);
+				}
+			}
+		}
+	}
+}
 
 // -- Movement functions --
 function moveLeft() {
@@ -124,15 +152,17 @@ function moveDown() {
 document.addEventListener("keydown", function(e) {
 	let keynum = e.keyCode;
 
-	// before actually moving tiles, merge everything on the movement axis
-
 	if (keynum === 39 || keynum === 68) {
+		mergeTiles(false);
 		moveRight();
 	} else if (keynum === 37 || keynum == 65) {
+		mergeTiles(false);
 		moveLeft();
 	} else if (keynum === 87 || keynum == 38) {
+		mergeTiles(true);
 		moveUp();
 	} else if (keynum === 83 || keynum == 40) {
+		mergeTiles(true);
 		moveDown();
 	}
 });
