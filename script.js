@@ -1,6 +1,8 @@
 let grid = [];
 for (let i = 0; i < 4; i++) { grid.push([]); }
 
+let largestTile = 2;
+
 function updateTile(x, y) {
 	let tile = document.querySelector(`.row${y}.col${x}`);
 	// tile.style.backgroundColor = `rgb(${100 - value * 4}, 75, ${255 - value * 16})`;
@@ -39,6 +41,12 @@ function moveTile(x, y, newx, newy) {
 	tile.style.top = `${8 + tile.y * 166}px`;
 }
 
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
 // addTile(0, 0, value=2);
 // addTile(1, 0, value=2);
 // addTile(2, 0, value=4);
@@ -59,9 +67,13 @@ function mergeTiles() {
 			if (!grid[x][y]) continue;
 
 			if (grid[x][y].length == 2) {
+				// merge the tiles and update new one
 				grid[x][y] = grid[x][y][0] + grid[x][y][1]; // update to new value
 				document.getElementById("tile-container").removeChild(document.querySelector(`.row${y}.col${x}`)) // remove old element
 				updateTile(x, y); // update style of tile
+
+				// update high score
+				if (grid[x][y] > largestTile) largestTile = grid[x][y];
 			}
 		}
 	}
@@ -69,14 +81,17 @@ function mergeTiles() {
 
 // -- Movement functions --
 function moveLeft() {
+	let movementMade = false;
+
 	for (let y = 0; y < 4; y++) {
 		for (let x = 1; x < 4; x++) {
 			if (!grid[x][y]) continue;
 
 			let newPos = x-1;
 			while (newPos >= 0 && !grid[newPos][y]) {
+				movementMade = true;
 				grid[newPos][y] = grid[newPos+1][y];
-				grid[newPos+1][y] = undefined; 
+				grid[newPos+1][y] = undefined;
 				newPos -= 1;
 			}
 			newPos += 1; // after while loop, newPos is one off
@@ -86,6 +101,7 @@ function moveLeft() {
 			}
 
 			if (grid[newPos][y] == grid[newPos-1][y]) {
+				movementMade = true;
 				grid[newPos-1][y] = [grid[newPos-1][y], grid[newPos][y]]; // eg (2, 2), (4, 4), etc
 				grid[newPos][y] = undefined;
 				newPos -= 1;
@@ -93,14 +109,17 @@ function moveLeft() {
 			moveTile(x, y, newPos, y);
 		}
 	}
+	return movementMade;
 }
 function moveRight() {
+	let movementMade = false;
 	for (let y = 0; y < 4; y++) {
 		for (let x = 2; x >= 0; x--) {
 			if (!grid[x][y]) continue;
 
 			let newPos = x+1;
 			while (newPos < 4 && !grid[newPos][y]) {
+				movementMade = true;
 				grid[newPos][y] = grid[newPos-1][y];
 				grid[newPos-1][y] = undefined;
 				newPos += 1;
@@ -112,6 +131,7 @@ function moveRight() {
 			}
 
 			if (grid[newPos][y] == grid[newPos+1][y]) {
+				movementMade = true;
 				grid[newPos+1][y] = [grid[newPos+1][y], grid[newPos][y]]; // eg (2, 2), (4, 4), etc
 				grid[newPos][y] = undefined;
 				newPos += 1;
@@ -119,14 +139,17 @@ function moveRight() {
 			moveTile(x, y, newPos, y);
 		}
 	}
+	return movementMade;
 }
 function moveUp() {
+	let movementMade = false;
 	for (let x = 0; x < 4; x++) {
 		for (let y = 1; y < 4; y++) {
 			if (!grid[x][y]) continue;
 
 			let newPos = y-1;
 			while (newPos >= 0 && !grid[x][newPos]) {
+				movementMade = true;
 				grid[x][newPos] = grid[x][newPos+1];
 				grid[x][newPos+1] = undefined;
 				newPos -= 1;
@@ -138,6 +161,7 @@ function moveUp() {
 			}
 
 			if (grid[x][newPos] == grid[x][newPos-1]) {
+				movementMade = true;
 				grid[x][newPos-1] = [grid[x][newPos-1], grid[x][newPos]]; // eg (2, 2), (4, 4), etc
 				grid[x][newPos] = undefined;
 				newPos -= 1;
@@ -145,14 +169,17 @@ function moveUp() {
 			moveTile(x, y, x, newPos);
 		}
 	}
+	return movementMade;
 }
 function moveDown() {
+	let movementMade = false;
 	for (let x = 0; x < 4; x++) {
 		for (let y = 2; y >= 0; y--) {
 			if (!grid[x][y]) continue;
 
 			let newPos = y+1;
 			while (newPos < 4 && !grid[x][newPos]) {
+				movementMade = true;
 				grid[x][newPos] = grid[x][newPos-1];
 				grid[x][newPos-1] = undefined;
 				newPos += 1;
@@ -164,6 +191,7 @@ function moveDown() {
 			}
 
 			if (grid[x][newPos] == grid[x][newPos+1]) {
+				movementMade = true;
 				grid[x][newPos+1] = [grid[x][newPos+1], grid[x][newPos]]; // eg (2, 2), (4, 4), etc
 				grid[x][newPos] = undefined;
 				newPos += 1;
@@ -171,21 +199,32 @@ function moveDown() {
 			moveTile(x, y, x, newPos);
 		}
 	}
+	return movementMade;
+}
+
+function checkForOpenCells() {
+	for (let x = 0; x < 4; x++) {
+		for (let y = 0; y < 4; y++) {
+			if (!grid[x][y]) return true;
+		}
+	}
+	return false;
 }
 
 // Bind keys
 document.addEventListener("keydown", function(e) {
 	let keynum = e.keyCode;
 
+	let movementMade = false;
 	// move tiles
 	if (keynum === 39 || keynum === 68) {
-		moveRight();
+		movementMade = moveRight();
 	} else if (keynum === 37 || keynum == 65) {
-		moveLeft();
+		movementMade = moveLeft();
 	} else if (keynum === 87 || keynum == 38) {
-		moveUp();
+		movementMade = moveUp();
 	} else if (keynum === 83 || keynum == 40) {
-		moveDown();
+		movementMade = moveDown();
 	}
 
 	// merge tiles
@@ -193,10 +232,12 @@ document.addEventListener("keydown", function(e) {
 
 	// add new tile
 	if (keynum == 39 || keynum == 68 || keynum == 37 || keynum == 65 || keynum == 87 || keynum == 38 || keynum == 83 || keynum == 40) {
-		window.setTimeout(function() {
-			while (!addTile(Math.floor(Math.random() * 4), Math.floor(Math.random() * 4), 2)) {
+		if (checkForOpenCells() && movementMade) {
+			while (!addTile(Math.floor(Math.random() * 4),
+			Math.floor(Math.random() * 4),
+			Math.random() < 0.9 ? 2 : 4)) {
 				continue;
 			}
-		}, 60);
+		}
 	}
 });

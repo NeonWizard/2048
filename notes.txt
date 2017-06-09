@@ -1,3 +1,0 @@
-* only add new tile if a space is available and tiles were moved
-
-* spawned tiles have higher values based on the largest tile on the board
