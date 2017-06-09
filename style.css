@@ -79,3 +79,22 @@ body {
 
 	transition: .15s;
 }
+
+#footer {
+	position: absolute;
+	bottom: 15px;
+	right: 50px;
+}
+
+#footer a {
+	text-decoration: none;
+	outline: none;
+	color: rgb(100, 100, 100);
+	font-size: 1.1em;
+	font-family: default;
+	transition: 0.4s;
+}
+
+#footer a:hover {
+	color: rgb(180, 180, 180);
+}
