@@ -1,0 +1,2 @@
+* add transition to tiles being added/merged
+* add scoring system
