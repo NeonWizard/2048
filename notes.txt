@@ -1,3 +1,3 @@
-shift all tiles down on movement axis
-when shifting a tile, after the while loop if the tile after it is the same, combine the two in the grid
-	and store as (2, 2) or something. Then after all movement, loop through grid and change (2, 2) to 4
+* only add new tile if a space is available and tiles were moved
+
+* spawned tiles have higher values based on the largest tile on the board
