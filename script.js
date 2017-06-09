@@ -23,8 +23,8 @@ function addTile(x, y, value) {
 	tile.className = `row${y} col${x} tile`;
 	tile.x = x;
 	tile.y = y;
-	tile.style.left = `${8 + tile.x * 166}px`;
-	tile.style.top =  `${8 + tile.y * 166}px`;
+	tile.style.left = `${8 + tile.x * 156}px`;
+	tile.style.top =  `${8 + tile.y * 156}px`;
 	document.getElementById("tile-container").appendChild(tile);
 
 	updateTile(x, y);
@@ -32,13 +32,23 @@ function addTile(x, y, value) {
 	return true;
 }
 
+function addRandomTile(value) {
+	if (!checkForOpenCells()) return;
+
+	while (!addTile(Math.floor(Math.random() * 4),
+	Math.floor(Math.random() * 4),
+	value)) {
+		continue;
+	}
+}
+
 function moveTile(x, y, newx, newy) {
 	let tile = document.querySelector(`.row${y}.col${x}`);
 	tile.className = `row${newy} col${newx} tile`;
 	tile.x = newx;
 	tile.y = newy;
-	tile.style.left = `${8 + tile.x * 166}px`;
-	tile.style.top = `${8 + tile.y * 166}px`;
+	tile.style.left = `${8 + tile.x * 156}px`;
+	tile.style.top = `${8 + tile.y * 156}px`;
 }
 
 function getRandomInt(min, max) {
@@ -46,20 +56,6 @@ function getRandomInt(min, max) {
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min)) + min;
 }
-
-// addTile(0, 0, value=2);
-// addTile(1, 0, value=2);
-// addTile(2, 0, value=4);
-// // addTile(3, 0, value=8);
-// // addTile(3, 0, value=16);
-// addTile(0, 1, value=8);
-// addTile(1, 1, value=32);
-// addTile(2, 2, value=64);
-
-addTile(0, 0, 2);
-addTile(0, 1, 2);
-addTile(0, 2, 2);
-addTile(0, 3, 2);
 
 function mergeTiles() {
 	for (let x = 0; x < 4; x++) {
@@ -232,12 +228,11 @@ document.addEventListener("keydown", function(e) {
 
 	// add new tile
 	if (keynum == 39 || keynum == 68 || keynum == 37 || keynum == 65 || keynum == 87 || keynum == 38 || keynum == 83 || keynum == 40) {
-		if (checkForOpenCells() && movementMade) {
-			while (!addTile(Math.floor(Math.random() * 4),
-			Math.floor(Math.random() * 4),
-			Math.random() < 0.9 ? 2 : 4)) {
-				continue;
-			}
+		if (movementMade) {
+			addRandomTile(Math.random() < 0.9 ? 2 : 4);
 		}
 	}
 });
+
+addRandomTile(2);
+addRandomTile(2);
