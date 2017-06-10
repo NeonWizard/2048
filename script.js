@@ -227,11 +227,13 @@ document.addEventListener("keydown", function(e) {
 	mergeTiles();
 
 	// add new tile
-	if (keynum == 39 || keynum == 68 || keynum == 37 || keynum == 65 || keynum == 87 || keynum == 38 || keynum == 83 || keynum == 40) {
-		if (movementMade) {
-			addRandomTile(Math.random() < 0.9 ? 2 : 4);
+	window.setTimeout(function() {
+		if (keynum == 39 || keynum == 68 || keynum == 37 || keynum == 65 || keynum == 87 || keynum == 38 || keynum == 83 || keynum == 40) {
+			if (movementMade) {
+				addRandomTile(Math.random() < 0.9 ? 2 : 4);
+			}
 		}
-	}
+	}, 100);
 });
 
 addRandomTile(2);
