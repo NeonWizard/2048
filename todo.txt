@@ -1,3 +1,2 @@
 * add transition to tiles being added/merged
-* add scoring system
 * make it playable on mobile (tapping on the side slides the tiles in that direction)

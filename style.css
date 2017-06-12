@@ -30,7 +30,7 @@ body {
 
 #left-box {
 	left: 0;
-	top: 33%;
+	top: 30%;
 
 	font-family: Montserrat;
 }
@@ -54,6 +54,26 @@ body {
 #score {
 	margin-left: 5px;
 	color: rgb(220, 220, 220);
+}
+
+#submit-score {
+	font-size: 1.5em;
+	font-family: inherit;
+	color: rgb(220, 220, 220);
+
+	background-color: rgb(50, 50, 50);
+	border: none;
+	border-radius: 5px;
+	outline: none;
+
+	cursor: pointer;
+
+	padding: 15px 22px;
+	margin-top: 75px;
+}
+
+#submit-score:hover {
+	background-color: rgb(60, 60, 60);
 }
 
 #right-box {
@@ -81,6 +101,7 @@ body {
 .high-score-entry {
 	display: flex;
 	justify-content: space-between;
+	margin-bottom: 1px;
 }
 
 .high-score-entry .score-info {

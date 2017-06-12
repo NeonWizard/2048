@@ -235,7 +235,7 @@ function getHighScores() {
 };
 getHighScores();
 
-var submitScore = function () {
+function submitScore() {
 	let initials = prompt("Enter your initials: ");
 	fetch("https://highscoreapi.herokuapp.com/scores", {
 		method: "POST",
