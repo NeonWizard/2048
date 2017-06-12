@@ -2,6 +2,7 @@ let grid = [];
 for (let i = 0; i < 4; i++) { grid.push([]); }
 
 let largestTile = 2;
+let score = 0;
 
 function updateTile(x, y) {
 	let tile = document.querySelector(`.row${y}.col${x}`);
@@ -68,8 +69,10 @@ function mergeTiles() {
 				document.getElementById("tile-container").removeChild(document.querySelector(`.row${y}.col${x}`)) // remove old element
 				updateTile(x, y); // update style of tile
 
-				// update high score
+				// update scores
 				if (grid[x][y] > largestTile) largestTile = grid[x][y];
+				score += grid[x][y];
+				document.getElementById("score").innerHTML = score;
 			}
 		}
 	}
@@ -206,6 +209,48 @@ function checkForOpenCells() {
 	}
 	return false;
 }
+
+// API stuff
+function getHighScores() {
+	fetch("https://highscoreapi.herokuapp.com/scores").then(function (response) {
+		console.log("Scores received. Status:", response.status);
+		return response.json();
+	}).then(function (data) {
+		let scoresList = document.querySelector("#high-scores");
+		for (let i = 0; i < data.length; i++) {
+			let container = document.createElement("DIV");
+			container.className = "high-score-entry";
+			let number = document.createElement("SPAN");
+			let info = document.createElement("SPAN");
+			number.className = "score-number";
+			info.className = "score-info";
+
+			number.innerHTML = i+1;
+			info.innerHTML = `${data[i].name} - ${data[i].score}`;
+
+			container.appendChild(number); container.appendChild(info);
+			scoresList.appendChild(container);
+		}
+	});
+};
+getHighScores();
+
+var submitScore = function () {
+	let initials = prompt("Enter your initials: ");
+	fetch("https://highscoreapi.herokuapp.com/scores", {
+		method: "POST",
+		headers: new Headers({
+			"Content-Type": "application/json"
+		}),
+		body: JSON.stringify({
+			name: initials,
+			score: score
+		})
+	}).then(function (response) {
+		console.log("Score submitted. Status:", response.status);
+	});
+};
+
 
 // Bind keys
 document.addEventListener("keydown", function(e) {

@@ -13,6 +13,87 @@ body {
 	overflow: hidden;
 
 	background-color: black;
+	color: white;
+}
+
+.side-box {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	position: absolute;
+	top: 0;
+
+	width: 28%;
+	height: 100%;
+}
+
+#left-box {
+	left: 0;
+	top: 33%;
+
+	font-family: Montserrat;
+}
+
+#left-box h1 {
+	font-size: 4em;
+
+	padding: 0px 5px;
+	margin: 0;
+	margin-bottom: 25px;
+	border-bottom: 1px solid silver;
+}
+
+#left-box p {
+	font-size: 1.8em;
+	color: rgb(180, 180, 180);
+
+	margin: 0;
+}
+
+#score {
+	margin-left: 5px;
+	color: rgb(220, 220, 220);
+}
+
+#right-box {
+	right: 0;
+	top: 25%;
+
+	font-family: Montserrat;
+}
+
+#right-box h1 {
+	font-size: 2.3em;
+	color: rgb(230, 230, 230);
+
+	padding: 5px;
+	margin: 0;
+	margin-bottom: 15px;
+	border-bottom: 1px solid silver;
+}
+
+#high-scores {
+	font-size: 1.3em;
+	width: 48%;
+}
+
+.high-score-entry {
+	display: flex;
+	justify-content: space-between;
+}
+
+.high-score-entry .score-info {
+	text-align: left;
+	flex-grow: 2;
+	flex-basis: 0;
+}
+
+.high-score-entry .score-number {
+	flex-grow: 1;
+	flex-basis: 0;
+
+	color: gray;
 }
 
 #center-box {
